@@ -1,12 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Button } from "./ui/button";
 
 export function Header() {
   return (
     <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-10 h-[88px] max-sm:h-[68px] flex items-center">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+          <div className="flex items-center gap-2">
             <div className="relative size-10 max-sm:size-8">
               <Image
                 src="/logo.png"
@@ -21,9 +22,11 @@ export function Header() {
 
           <Link
             href="/sobre"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            passHref
           >
-            Sobre
+            <Button variant="ghost" className="gap-2 duration-500 cursor-pointer">
+              Sobre
+            </Button>
           </Link>
         </div>
       </div>
