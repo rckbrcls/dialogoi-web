@@ -11,7 +11,7 @@ interface DialogCardProps {
 export function DialogCard({ dialog }: DialogCardProps) {
   return (
     <Link href={`/dialogo/${dialog.id}`}>
-      <Card className="hover:ring-primary/30 transition-all cursor-pointer hover:shadow-lg">
+      <Card className="hover:ring-primary/30 transition-all duration-500 cursor-pointer hover:shadow-lg">
         <CardHeader>
           <CardTitle className="text-lg">{dialog.title}</CardTitle>
           <CardDescription className="line-clamp-2">

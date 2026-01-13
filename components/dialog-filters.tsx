@@ -100,14 +100,14 @@ export function DialogFilters() {
               }))
             }
           >
-            <SelectTrigger className="w-32">
+            <SelectTrigger className="w-32 cursor-pointer">
               <span className="flex flex-1 text-left">
                 {sortOptions.find((o) => o.value === filters.sortBy)?.label}
               </span>
             </SelectTrigger>
             <SelectContent>
               {sortOptions.map((opt) => (
-                <SelectItem key={opt.value} value={opt.value}>
+                <SelectItem className="cursor-pointer" key={opt.value} value={opt.value}>
                   {opt.label}
                 </SelectItem>
               ))}

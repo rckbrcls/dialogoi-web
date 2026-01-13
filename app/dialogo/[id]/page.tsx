@@ -29,7 +29,7 @@ export default async function DialogPage({ params }: DialogPageProps) {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center gap-4">
             <Link passHref href="/">
-              <Button variant="ghost" size="sm" className="gap-2">
+              <Button variant="ghost" size="sm" className="gap-2 duration-500 cursor-pointer">
                 <ArrowLeft className="size-4" />
                 Voltar
               </Button>
