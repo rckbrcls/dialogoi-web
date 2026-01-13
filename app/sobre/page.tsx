@@ -11,8 +11,8 @@ export default function SobrePage() {
       <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center gap-4">
-            <Link href="/">
-              <Button variant="ghost" size="sm" className="gap-2">
+            <Link passHref href="/">
+              <Button variant="ghost" size="sm" className="gap-2 cursor-pointer">
                 <ArrowLeft className="size-4" />
                 Voltar
               </Button>
@@ -166,7 +166,7 @@ export default function SobrePage() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <Button variant="outline" size="sm" className="gap-2">
+                    <Button variant="outline" size="sm" className="gap-2 cursor-pointer">
                       <Github className="size-4" />
                       Ver no GitHub
                     </Button>
