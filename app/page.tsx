@@ -1,6 +1,6 @@
+import Link from "next/link";
 import { mockDialogs } from "@/lib/data";
 import { DialogCard } from "@/components/dialog-card";
-import { MessageSquare } from "lucide-react";
 
 export default function Home() {
   return (
@@ -8,13 +8,11 @@ export default function Home() {
       {/* Header */}
       <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-10">
         <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center gap-3">
-            <div className="size-10 rounded-xl bg-primary flex items-center justify-center">
-              <MessageSquare className="size-5 text-primary-foreground" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-foreground">Dialogoi</h1>
-            </div>
+          <div className="flex items-center justify-between">
+            <h1 className="text-4xl font-thin text-foreground">Dialogoi</h1>
+            <Link href="/sobre" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              Sobre
+            </Link>
           </div>
         </div>
       </header>
