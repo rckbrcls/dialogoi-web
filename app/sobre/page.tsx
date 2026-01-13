@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowLeft, Mic, Shield, Users, Sparkles, FileText, Github } from "lucide-react";
+import Image from "next/image";
+import { ArrowLeft, Mic, Users, FileText, Github, Tags } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -29,6 +30,16 @@ export default function SobrePage() {
         <p className="text-lg text-muted-foreground mb-8">
           Um espaço para compartilhar conversas produtivas, de forma anônima.
         </p>
+
+        <div className="relative h-[200px] mb-12 overflow-hidden">
+          <Image
+            src="/people.png"
+            alt="Pessoas conversando"
+            fill
+            className="object-contain"
+            priority
+          />
+        </div>
 
         {/* História */}
         <div className="space-y-4 mb-12">
@@ -62,50 +73,10 @@ export default function SobrePage() {
             <CardContent className="pt-6">
               <Mic className="size-8 text-primary mb-3" />
               <h3 className="font-semibold text-foreground mb-2">
-                Gravação de áudio
+                Transcrição
               </h3>
               <p className="text-sm text-muted-foreground">
-                As conversas são gravadas em áudio durante encontros presenciais
-                ou chamadas de voz, com consentimento de todos.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="pt-6">
-              <Sparkles className="size-8 text-primary mb-3" />
-              <h3 className="font-semibold text-foreground mb-2">
-                Transcrição com IA
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Utilizamos modelos de IA com diarização para transcrever o áudio,
-                identificando cada participante automaticamente.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="pt-6">
-              <FileText className="size-8 text-primary mb-3" />
-              <h3 className="font-semibold text-foreground mb-2">
-                Resumo automático
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                O resumo de cada diálogo também é gerado pelo nosso modelo de IA,
-                sintetizando os principais pontos da conversa.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="pt-6">
-              <Shield className="size-8 text-primary mb-3" />
-              <h3 className="font-semibold text-foreground mb-2">
-                Anonimização
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Todos os nomes reais são substituídos por pseudônimos. Informações
-                identificáveis são removidas ou alteradas.
+                O modelo de IA processa o áudio e gera uma transcrição textual completa e precisa de toda a conversa.
               </p>
             </CardContent>
           </Card>
@@ -114,11 +85,34 @@ export default function SobrePage() {
             <CardContent className="pt-6">
               <Users className="size-8 text-primary mb-3" />
               <h3 className="font-semibold text-foreground mb-2">
-                Publicação
+                Divisão de Falantes
               </h3>
               <p className="text-sm text-muted-foreground">
-                Após revisão, os diálogos são publicados aqui com um resumo
-                do tema discutido e as ideias principais.
+                Identificação automática e separação das falas de cada participante através de diarização avançada.
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="pt-6">
+              <FileText className="size-8 text-primary mb-3" />
+              <h3 className="font-semibold text-foreground mb-2">
+                Criação de Resumo
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                A IA analisa o conteúdo e gera um resumo estruturado, destacando os pontos principais do diálogo.
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="pt-6">
+              <Tags className="size-8 text-primary mb-3" />
+              <h3 className="font-semibold text-foreground mb-2">
+                Criação de Tags
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Categorização automática do conteúdo com tags relevantes para organizar e facilitar a busca.
               </p>
             </CardContent>
           </Card>
