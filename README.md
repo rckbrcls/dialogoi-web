@@ -1,51 +1,77 @@
 # Dialogoi Web
 
-Dialogoi Web is a small Next.js archive interface for browsing curated dialogue-style conversations. The current application lets visitors search, sort, filter, preview, and read locally defined dialogue entries.
+Dialogoi Web is the public interface for Dialogoi, a project for publishing productive conversations anonymously. The product idea comes from the wish to preserve informal discussions between friends - the kind of conversations about philosophy, technology, life, and personal perspective that can stay useful long after they happen - while protecting the people who took part in them.
 
-The project is intentionally compact: it is a single frontend app with static mock data, App Router pages, reusable UI primitives, and a small set of pure filtering utilities. No backend, database, authentication system, content pipeline, or production deployment configuration was identified in the current codebase.
+This repository implements the web reading and discovery surface for that idea. It does not contain the audio processing model, a backend, a database, or a production publishing pipeline yet.
 
-## Current Status
+## What Dialogoi Is
 
-This repository currently represents a working local/static prototype.
+Dialogoi is a space for turning real conversations into publishable dialogues.
 
-- Dialogue content is stored in `lib/data.ts`.
-- The home page renders a searchable and filterable archive from local data.
-- Dialogue detail pages are resolved from local IDs with `getDialogById`.
-- Vercel Analytics is mounted in the root layout, but no Vercel project configuration or deployment workflow was found.
-- The product story in `app/sobre/page.tsx` describes a future AI workflow for transcription, diarization, anonymization, summaries, and tags. That workflow is not implemented in this repository.
-- Some visible app copy and metadata are currently in Portuguese. Workspace policy expects app strings to be written in English unless another language is explicitly requested, so the UI copy should be normalized in a future product pass.
+The core product promise is simple:
 
-## Product Purpose
+- the ideas are real;
+- the names are fictitious;
+- the published conversation should be useful to readers;
+- participant identity should stay protected;
+- the final result should feel like a readable dialogue, not a raw transcript dump.
 
-Dialogoi is designed as a public reading surface for anonymized, productive conversations. The current web app focuses on discovery and readability:
+The About page in `app/sobre/page.tsx` is the current product source of truth. It describes Dialogoi as a way to share productive conversations without attaching identities to opinions that could be misunderstood outside their original context.
 
-- present a small catalog of conversations;
-- make conversations searchable by title and summary;
-- let visitors filter by tags;
-- sort entries by date or title;
-- open a dialogue detail page with metadata, summary, participants, and ordered messages.
+## Why It Exists
 
-## Main Features
+Dialogoi starts from a practical tension: some of the most valuable ideas come from casual, honest conversations, but publishing those conversations directly can expose people in ways they did not agree to.
 
-- Sticky branded header with navigation to the about page.
-- Home archive at `/` powered by `components/dialog-filters.tsx`.
-- Search input for dialogue titles and summaries.
-- Tag filters generated from the current dialogue dataset.
-- Sort options for newest, oldest, A-Z, and Z-A.
-- Card grid rendered with `components/dialog-card.tsx`.
-- Dynamic dialogue route at `/dialogo/[id]`.
-- Detail page summary via `components/summary-card.tsx`.
-- Ordered chat transcript rendering via `components/chat-message.tsx`.
-- About page at `/sobre` describing the project concept and intended future AI model.
-- Static assets under `public/`, including the logo and about-page illustration.
+The project exists to make those discussions readable and shareable while reducing that exposure. In the intended product experience, the reader should focus on the ideas, arguments, and reflections rather than the real identities behind them.
 
-## Routes
+The name Dialogoi references the Greek tradition of dialogues, especially the idea that conversations can shape thought when they are preserved and made available to others.
+
+## How The Product Is Intended To Work
+
+The current About page describes an intended open source AI model that would transform private conversations into publishable dialogues.
+
+```mermaid
+flowchart LR
+  A["Informal audio conversation"] --> B["Transcription"]
+  B --> C["Speaker diarization"]
+  C --> D["Anonymization"]
+  D --> E["Summary generation"]
+  E --> F["Tag generation"]
+  F --> G["Publishable anonymous dialogue"]
+```
+
+Based on the product copy, the intended model responsibilities are:
+
+- transcribe the complete conversation from audio;
+- identify and separate each speaker through diarization;
+- anonymize the participants;
+- create a structured summary of the dialogue;
+- generate relevant tags for organization and discovery;
+- let other people use or adapt the model for their own conversations.
+
+That model is not implemented in this web repository. The About page currently links to `https://github.com/seu-usuario/dialogoi-model`, which appears to be a placeholder URL for the future model repository.
+
+## What This Repository Implements
+
+This repository implements the current Dialogoi web app:
+
+- a home page with the Dialogoi brand and archive list;
+- client-side search, tag filtering, and sorting;
+- cards for dialogue previews;
+- dynamic dialogue detail pages;
+- summary and participant blocks;
+- ordered message rendering with speaker colors;
+- an About page explaining the project motivation and future model direction.
+
+The web app currently starts from local dialogue objects in `lib/data.ts`. Those objects stand in for the publishable dialogue output that the future model or content pipeline would eventually produce.
+
+## Current Routes
 
 | Route | File | Responsibility |
 | --- | --- | --- |
-| `/` | `app/page.tsx` | Renders the main archive page with `Header` and `DialogFilters`. |
-| `/dialogo/[id]` | `app/dialogo/[id]/page.tsx` | Loads a dialogue by ID from local data, renders metadata, summary, and ordered messages, and calls `notFound()` for unknown IDs. |
-| `/sobre` | `app/sobre/page.tsx` | Explains the project concept and future model idea. |
+| `/` | `app/page.tsx` | Renders the main Dialogoi surface with the header and dialogue discovery UI. |
+| `/dialogo/[id]` | `app/dialogo/[id]/page.tsx` | Renders one dialogue from the local dataset, including date, tags, summary, participants, and ordered messages. |
+| `/sobre` | `app/sobre/page.tsx` | Explains the project origin, anonymity motivation, intended AI workflow, and model direction. |
 
 ## Technology Stack
 
@@ -54,7 +80,7 @@ Dialogoi is designed as a public reading surface for anonymized, productive conv
 | Framework | Next.js 16 App Router |
 | UI runtime | React 19 |
 | Language | TypeScript |
-| Styling | Tailwind CSS v4 with CSS variables in `app/globals.css` |
+| Styling | Tailwind CSS v4 with theme tokens in `app/globals.css` |
 | UI primitives | shadcn-style components in `components/ui/*`, configured by `components.json` |
 | Lower-level UI utilities | Base UI through `@base-ui/react` |
 | Icons | `lucide-react` |
@@ -66,95 +92,89 @@ Dialogoi is designed as a public reading surface for anonymized, productive conv
 
 ```text
 dialogoi-web/
-├── app/
-│   ├── dialogo/[id]/page.tsx  # Dialogue detail route
-│   ├── sobre/page.tsx         # About page
-│   ├── globals.css            # Tailwind import, theme tokens, and global styles
-│   ├── layout.tsx             # Root layout, metadata, fonts, and Vercel Analytics
-│   └── page.tsx               # Home route
-├── components/
-│   ├── ui/                    # Reusable UI primitives
-│   ├── chat-message.tsx       # Message row for dialogue transcripts
-│   ├── dialog-card.tsx        # Archive card for a dialogue
-│   ├── dialog-filters.tsx     # Client-side search, tag filter, sort, and grid state
-│   ├── header.tsx             # Main site header
-│   └── summary-card.tsx       # Dialogue summary and participant block
-├── lib/
-│   ├── data.ts                # Dialogue, participant, and message types plus mock data
-│   ├── filter-utils.ts        # Pure filtering, sorting, and facet helpers
-│   └── utils.ts               # Shared className merge helper
-├── public/                    # Static image assets
-├── components.json            # shadcn component configuration
-├── next.config.ts             # Minimal Next.js config
-├── package.json               # Scripts and dependencies
-├── pnpm-lock.yaml             # pnpm lockfile
-└── pnpm-workspace.yaml        # Single-package pnpm workspace
+|-- app/
+|   |-- dialogo/[id]/page.tsx  # Dialogue detail route
+|   |-- sobre/page.tsx         # Product story and model direction
+|   |-- globals.css            # Tailwind imports, CSS variables, and theme tokens
+|   |-- layout.tsx             # Root layout, metadata, fonts, and analytics
+|   `-- page.tsx               # Home route
+|-- components/
+|   |-- ui/                    # Reusable UI primitives
+|   |-- chat-message.tsx       # Speaker-colored message row
+|   |-- dialog-card.tsx        # Dialogue preview card
+|   |-- dialog-filters.tsx     # Search, tag filter, sort, and list state
+|   |-- header.tsx             # Main site header
+|   `-- summary-card.tsx       # Dialogue summary and participants
+|-- lib/
+|   |-- data.ts                # Dialogue types, mock participants, and mock dialogues
+|   |-- filter-utils.ts        # Pure filtering, sorting, and facet helpers
+|   `-- utils.ts               # Shared className merge helper
+|-- public/                    # Static image assets
+|-- components.json            # shadcn component configuration
+|-- next.config.ts             # Minimal Next.js config
+|-- package.json               # Scripts and dependencies
+|-- pnpm-lock.yaml             # pnpm lockfile
+`-- pnpm-workspace.yaml        # Single-package pnpm workspace
 ```
 
 `components/component-example.tsx` and `components/example.tsx` appear to be local UI demonstration components. They are not referenced by the current application routes.
 
-## Data Model
+## Dialogue Data Model
 
-The current data model lives in `lib/data.ts`.
+The current publishable dialogue shape is defined in `lib/data.ts`.
 
 | Type | Key fields | Purpose |
 | --- | --- | --- |
-| `Participant` | `id`, `name`, `avatar`, `color` | Represents a speaker in a dialogue. The color is used for avatars and speaker labels. |
-| `Message` | `id`, `participantId`, `content`, `order`, `timestamp` | Represents a single message in a transcript. Detail pages sort by `order`. |
-| `Dialog` | `id`, `title`, `summary`, `participants`, `messages`, `createdAt`, `tags` | Represents one archive entry. |
+| `Participant` | `id`, `name`, `avatar`, `color` | Represents an anonymized speaker in a published dialogue. |
+| `Message` | `id`, `participantId`, `content`, `order`, `timestamp` | Represents one ordered message in the readable dialogue transcript. |
+| `Dialog` | `id`, `title`, `summary`, `participants`, `messages`, `createdAt`, `tags` | Represents one published dialogue entry. |
 
 Helper functions:
 
-- `getDialogById(id)` returns a local dialogue or `undefined`.
-- `getParticipantById(dialog, participantId)` finds a speaker inside a dialogue.
+- `getDialogById(id)` returns a dialogue from the local dataset.
+- `getParticipantById(dialog, participantId)` resolves a message speaker within a dialogue.
 
-The repository does not currently include a CMS, markdown content layer, database, API fetcher, migration system, seed script, or persistent storage.
+The current sample data uses named participants and Portuguese copy. For production, the About page implies that participants should be anonymized before publication.
 
-## Data Flow
+## Current Data Flow
+
+The current repository begins after the intended AI/content pipeline. It assumes dialogue data already exists.
 
 ```mermaid
 flowchart LR
-  A["lib/data.ts mockDialogs"] --> B["components/dialog-filters.tsx"]
-  B --> C["lib/filter-utils.ts"]
-  C --> D["components/dialog-card.tsx"]
-  D --> E["app/dialogo/[id]/page.tsx"]
-  E --> F["components/summary-card.tsx"]
-  E --> G["components/chat-message.tsx"]
+  A["Future model or editorial pipeline"] -. "not implemented here" .-> B["lib/data.ts dialogue data"]
+  B --> C["components/dialog-filters.tsx"]
+  C --> D["lib/filter-utils.ts"]
+  D --> E["components/dialog-card.tsx"]
+  E --> F["app/dialogo/[id]/page.tsx"]
+  F --> G["components/summary-card.tsx"]
+  F --> H["components/chat-message.tsx"]
 ```
 
-The home page is the only interactive data surface. It keeps filter state in the client, derives tag facets from `mockDialogs`, applies `filterAndSortDialogs`, and renders the resulting card grid. The detail page is server-rendered from route params and local data.
+`components/dialog-filters.tsx` keeps filter state in the client, derives available tags from the local dataset, applies `filterAndSortDialogs`, and renders the visible card grid.
 
-## Filtering And Sorting
+`app/dialogo/[id]/page.tsx` resolves one dialogue by route ID, sorts messages by `order`, and renders the dialogue as a readable conversation.
 
-`lib/filter-utils.ts` contains the reusable filtering logic:
+## Setup
 
-- `searchText` matches dialogue titles and summaries.
-- `selectedTags` uses OR matching against dialogue tags.
-- `selectedParticipants` is implemented in the utility layer but is not currently exposed in the UI.
-- `sortBy` supports date descending, date ascending, title ascending, and title descending.
-- `getAllTags` extracts sorted unique tags from the current dialogues.
-- `getAllParticipants` extracts sorted unique participants, but the current UI does not use it.
-
-## Prerequisites
+Prerequisites:
 
 - Node.js version compatible with Next.js 16.
 - pnpm.
 
-No project-specific environment variables were detected.
-
-## Installation
+Install dependencies:
 
 ```bash
 pnpm install
 ```
 
-## Local Development
+Start local development:
 
 ```bash
 pnpm dev
 ```
 
-This command starts the Next.js development server. Do not assume a production-like data source when running locally; all dialogue entries are loaded from `lib/data.ts`.
+No project-specific environment variables were identified.
 
 ## Available Scripts
 
@@ -167,46 +187,24 @@ This command starts the Next.js development server. Do not assume a production-l
 
 ## Validation
 
-The repository currently exposes linting only:
+The only validation script currently defined by the repository is linting:
 
 ```bash
 pnpm lint
 ```
 
-No unit test, integration test, end-to-end test, or visual regression setup was identified in the current codebase.
+No unit test, integration test, end-to-end test, or visual regression setup was identified.
 
-## External Services
+## Known Gaps
 
-The only external runtime integration found in the source code is Vercel Analytics:
-
-- dependency: `@vercel/analytics`;
-- usage: `Analytics` from `@vercel/analytics/next`;
-- mount point: `app/layout.tsx`.
-
-No API service, database provider, authentication provider, storage bucket, queue, email service, or model-serving service is wired into this app.
-
-## Deployment
-
-No deployment-specific configuration was identified. The repository contains the standard Next.js scripts needed for a production build, but it does not include a Vercel project configuration, Dockerfile, GitHub Actions workflow, release script, hosting notes, or production environment documentation.
-
-Before treating this app as production-ready, define:
-
-- the intended hosting provider;
-- the content ownership and publication process;
-- whether local mock data should be replaced with a CMS, file-based content system, or backend API;
-- analytics and privacy expectations;
-- the final public URL for the model repository referenced from the about page.
-
-## Known Limitations
-
-- Content is hardcoded in `lib/data.ts`.
-- There is no durable content source or editorial workflow.
-- There is no implemented pipeline for audio ingestion, transcription, diarization, anonymization, summary generation, or tag generation.
-- The about page links to `https://github.com/seu-usuario/dialogoi-model`, which appears to be a placeholder.
-- Some visible app strings and metadata are Portuguese even though the workspace policy expects app strings in English by default.
-- `selectedParticipants` exists in the filter state and utilities but is not exposed by the current filter UI.
-- `components/component-example.tsx` includes demonstration UI unrelated to the current product routes.
-- No automated tests were identified.
+- The AI model described on the About page is not implemented in this repository.
+- There is no audio upload, transcription, diarization, anonymization, summary generation, or tag generation code in this web app.
+- Dialogue content is currently hardcoded in `lib/data.ts`.
+- No backend API, database, CMS, migration system, or persistent content storage was identified.
+- No deployment-specific configuration, CI/CD workflow, Dockerfile, or production hosting notes were identified.
+- The model repository URL in `app/sobre/page.tsx` appears to be a placeholder.
+- The UI currently contains Portuguese visible copy and metadata, while this repository's documentation is written in English.
+- `selectedParticipants` exists in `lib/filter-utils.ts` but is not exposed by the current filter UI.
 - No license file was identified.
 
 ## License
